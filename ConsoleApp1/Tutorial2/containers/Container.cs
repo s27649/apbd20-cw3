@@ -27,17 +27,27 @@ public abstract class Container : IContainer
         SerialNumber = serialNumber;
         MaxPayload = maxPayload;
     }
-    public virtual void Unload(double value)
+    public virtual void Unload()
     {
-        CargoWeight -= value;
+        CargoWeight = 0;
     }
 
     public virtual void Load(double cargoWeight)
     {
         if (cargoWeight+CargoWeight> MaxPayload)
         {
-             throw new OverfillException();
+             throw new OverfillException("Masa ładunku przekracza maksymalną pojemność kontenera.");
         }
-       
+    }
+
+    public virtual string GetInfo()
+    {
+        return "Container:\n" +
+               $"Numer Seryjny: {SerialNumber} \n" +
+               $"Masa ładunku: {CargoWeight} kg\n" +
+               $"Wysokość: {Height} sm\n" +
+               $"Waga własna: {ConWeight} kg\n" +
+               $"Głębokość: {Depth} sm\n" +
+               $"Maksymalna ładowność: {MaxPayload} kg\n";
     }
 }

@@ -2,6 +2,6 @@ namespace ConsoleApp1.interfaces;
 
 public interface IContainer
 {
-    void Unload(double value);
+    void Unload();
     void Load(double cargoWeight);
 }

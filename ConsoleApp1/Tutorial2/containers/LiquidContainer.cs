@@ -4,6 +4,7 @@ namespace ConsoleApp1.containers;
 public class LiquidContainer : Container, IHazardNotifier
 {
     public bool IsDangerousCargo { get; set; }
+    private int next = 1;
     public LiquidContainer(double cargoWeight, double height, double conWeight, 
         double depth, string serialNumber, double maxPayload,bool isDangerousCargo) 
         : base(cargoWeight, height, conWeight, depth, serialNumber, maxPayload)
@@ -13,30 +14,31 @@ public class LiquidContainer : Container, IHazardNotifier
 
     public override void Load(double cargoWeight)
     {
-     
-        if (IsDangerousCargo)
+        double LoadPercent = IsDangerousCargo ? 0.5 : 0.9;
+        double Load = MaxPayload * LoadPercent;
+        
+        if (CargoWeight + cargoWeight > Load)
         {
-            if (cargoWeight+cargoWeight<MaxPayload*0.5)
-            {
-                CargoWeight += cargoWeight;
-            }
-        }
-        else
-        {
-            if (CargoWeight+cargoWeight<MaxPayload*0.9)
-            {
-                CargoWeight += cargoWeight;
-            }
-        }  
+            
+            OcurrenceSituation(SerialNumber,"Próbowano przekroczyć maksymalną ładowność.");
+        } 
+       
+        CargoWeight += cargoWeight; 
         base.Load(cargoWeight);
     }
 
-    public override void Unload(double value)
+    public override void Unload()
     {
-        base.Unload(value);
+        base.Unload();
+    }
+    
+    public void OcurrenceSituation(string serialNumber,string message)
+    {
+        Console.WriteLine($"container {serialNumber}: {message}");
     }
 
-    public void OcurrenceSituation(string serialNumber)
+    public override string GetInfo()
     {
+        return base.GetInfo()+$"Ładunek niebiezpieczny: {IsDangerousCargo}\n";
     }
 }

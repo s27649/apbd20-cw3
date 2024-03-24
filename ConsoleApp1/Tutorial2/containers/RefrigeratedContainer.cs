@@ -22,7 +22,7 @@ public class RefrigeratedContainer: Container,IHazardNotifier
     public double Temperature { get; set; }
     
     public RefrigeratedContainer(double cargoWeight, double height, double conWeight, double depth, 
-        string serialNumber, double maxPayload, double temperature)
+        string serialNumber, double maxPayload, double temperature,PossibleProducts products)
         : base(cargoWeight, height, conWeight, depth, serialNumber, maxPayload)
     {
         Temperature = temperature;
@@ -30,26 +30,37 @@ public class RefrigeratedContainer: Container,IHazardNotifier
 
     public new void Load(double cargoWeight,PossibleProducts product)
     {
-        base.Load(cargoWeight);
-        if (product !=null)
+        
+        if (Products.ContainsKey(product))
         {
-            OcurrenceSituation("prod");
+            OcurrenceSituation(SerialNumber,"Nie można załadować produktu innego typu do tego kontenera.");
+            
         }
 
         double prodTemp = Products[product];
         if (Temperature < prodTemp)
         {
-            OcurrenceSituation("temp");
-        }
-    }
-
-    public override void Unload(double value)
-    {
-        base.Unload(value);
-    }
-
-    public void OcurrenceSituation(string serialNumber)
-    {
+            OcurrenceSituation(SerialNumber,"Temperatura pojemnika jest zbyt niska dla załadowanego produktu.");
+        } 
+        CargoWeight += cargoWeight;
+        base.Load(cargoWeight);
         
+       
+    }
+
+    public override void Unload()
+    {
+        base.Unload();
+        
+    }
+
+    public void OcurrenceSituation(string serialNumber,string message)
+    {
+        Console.WriteLine($"container{serialNumber}: {message}");
+    }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo();
     }
 }

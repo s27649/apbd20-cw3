@@ -1,3 +1,4 @@
+using ConsoleApp1.exceptions;
 using ConsoleApp1.interfaces;
 
 namespace ConsoleApp1.containers;
@@ -12,22 +13,29 @@ public class GasContainer : Container,IHazardNotifier
         Pressure = pressure;
     }
 
-    public override void Unload(double value)
+    public override void Unload()
     {
-        base.Unload(value);
-        CargoWeight *= 0.05f;
+        CargoWeight *= 0.95;
     }
 
     public override void Load(double cargoWeight)
     {
-        base.Load(cargoWeight);
-        if (cargoWeight + CargoWeight > 0.95 * MaxPayload)
+       
+        if (cargoWeight + CargoWeight >MaxPayload)
         {
-            OcurrenceSituation(SerialNumber); 
-        }
+            throw new OverfillException("Masa ładunku przekracza maksymalną pojemność kontenera.");
+        } 
+        base.Load(cargoWeight);
+        CargoWeight += cargoWeight;
     }
 
-    public void OcurrenceSituation(string serialNumber)
+    public void OcurrenceSituation(string serialNumber, string message)
     {
+        Console.WriteLine($"container{serialNumber}: {message}");
+    }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo()+$"Ciśnienie: {Pressure} atm\n";
     }
 }
