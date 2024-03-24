@@ -29,6 +29,5 @@ public class GasContainer : Container,IHazardNotifier
 
     public void OcurrenceSituation(string serialNumber)
     {
-        throw new NotImplementedException();
     }
 }
