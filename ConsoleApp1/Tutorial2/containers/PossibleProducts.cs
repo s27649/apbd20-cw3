@@ -4,5 +4,12 @@ public enum PossibleProducts
 {
     Bananas,
     Chocolate,
-    Fish
+    Fish,
+    Meat,
+    Icecream,
+    Frozenpizza,
+    Cheese,
+    Sausages,
+    Butter,
+    Eggs
 }

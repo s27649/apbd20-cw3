@@ -6,19 +6,38 @@ namespace ConsoleApp1.containers;
 public abstract class Container : IContainer
 {
     public double CargoWeight { get; set; }
+    
+    public double Height { get; set; }
+    
+    public double ConWeight { get; set; }
+    
+    public double Depth { get; set; }
+    
+    public string SerialNumber { get; set; }
+    
+    public double MaxPayload { get; set; }
 
-    protected Container(double cargoWeight)
+    protected Container(double cargoWeight, double height, double conWeight, double depth, 
+        string serialNumber,double maxPayload)
     {
         CargoWeight = cargoWeight;
+        Height = height;
+        ConWeight = conWeight;
+        Depth = depth;
+        SerialNumber = serialNumber;
+        MaxPayload = maxPayload;
     }
-
-    public void Unload()
+    public virtual void Unload(double value)
     {
-        throw new NotImplementedException();
+        CargoWeight -= value;
     }
 
     public virtual void Load(double cargoWeight)
     {
-        throw new OverfillException();
+        if (cargoWeight+CargoWeight> MaxPayload)
+        {
+             throw new OverfillException();
+        }
+       
     }
 }
